@@ -4,9 +4,15 @@ const knex = require('knex')({
   searchPath: ['knex', 'public'],
 });
 
+/**
+ * Drop students and meals tables if they already exist
+ */
 knex.schema.dropTableIfExists('students');
 knex.schema.dropTableIfExists('meals');
 
+/**
+ * Create new student and meals table
+ */
 knex.schema.createTable('students', function (table) {
   table
     .increments('id')
