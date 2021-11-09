@@ -20,7 +20,7 @@ knex.schema.createTable('students', function (table) {
   table
     .string('password', 100)
     .notNullable();
-  t.timestamps();
+  table.timestamps();
 })
 
 knex.schema.createTable('meals', function (table) {
