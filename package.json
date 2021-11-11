@@ -4,5 +4,8 @@
     "express": "^4.17.1",
     "knex": "^0.95.14",
     "pg": "^8.7.1"
+  },
+  "scripts": {
+    "start": "node ./api/index.js"
   }
 }
