@@ -33,8 +33,8 @@ app.post("/api/students", async (req, res) => {
     password: req.body.password,
   })
   .returning('*')
-  .then(student => {
-    res.json(student);
+  .then(() => {
+    res.sendStatus(204);
   });
 });
 
@@ -52,8 +52,8 @@ app.post("/api/students", async (req, res) => {
       email: req.body.email,
       password: req.body.password,
     })
-    .then(student => {
-      res.json(student);
+    .then(() => {
+      res.sendStatus(204);
     });
 });
 
@@ -66,8 +66,8 @@ app.post("/api/students", async (req, res) => {
   knex("students")
   .where("id", req.params.id)
   .del()
-  .then(student => {
-    res.json(student);
+  .then(() => {
+    res.sendStatus(204);
   });
 });
 
