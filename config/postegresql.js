@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const knex = require('knex')({
   client: 'pg',
-  connection: process.env.PG_CONNECTION_STRING,
+  connection: process.env.PG_CONNECTION_STRING ? process.env.PG_CONNECTION_STRING : "postgres://postgres:test@localhost:5432/postgres",
   searchPath: ['knex', 'public'],
   });
 
