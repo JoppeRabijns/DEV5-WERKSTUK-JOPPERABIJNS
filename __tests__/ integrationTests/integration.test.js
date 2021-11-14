@@ -1,9 +1,12 @@
-const { expect, describe, test } = require("@jest/globals");
+const { expect, describe} = require("@jest/globals");
 const app = require('../../api/server');
 const supertest = require("supertest");
 const request = supertest(app)
 
-const student =  {id:1,name: "Student1", email: "email@email.be", password:"password123"};
+const knex = require("../../config/postegresql");
+
+
+const student =  {name: "Student1", email: "email@email.be", password:"password123"};
 const studentUpdate =  {name: "Update1", email: "email@email.be", password:"password123"};
 
 describe("test endpoints of api", () => {
@@ -46,4 +49,12 @@ describe("test endpoints of api", () => {
     .expect(204)
     .end(() => done());
   });
+});
+
+afterAll(() => {
+  try {
+      knex.destroy();     
+  } catch (e) {
+      console.log(e);
+  }
 });
