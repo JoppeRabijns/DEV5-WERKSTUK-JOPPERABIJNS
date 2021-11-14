@@ -15,9 +15,27 @@ app.use(bodyParser.json())
  * @returns {Object} all students in database
  */
  app.get("/api/students", async (req, res) => {
-  const students = await knex('students');
-  res.json({students});
+  knex('students')
+    .then((allStudents) => res.json(allStudents));
 });
+
+
+/**
+ * [POST] /api/students
+ * returns all students in database upon get request
+ * @returns {Object} all students in database
+ */
+ app.post("/api/students", async (req, res) => {
+  knex("students")
+    .insert({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+    })
+    .returning('*')
+    .then((student) => res.json(student));
+});
+
 
 /**
  * [PUT] /api/students/:id
@@ -29,15 +47,13 @@ app.use(bodyParser.json())
   knex("students")
     .where("id", req.params.id)
     .update({
-      title: req.body.title,
-      description: req.body.description,
-      price: req.body.price,
-    });
-  const student = await knex("students")
-    .where("id", req.params.id)
-    .first();
-  response.json({student});
-});
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+    })
+    .returning('*')
+    .then((student) => res.json(student));
+  });
 
 /**
  * [DELETE] /api/students/:id
@@ -45,8 +61,10 @@ app.use(bodyParser.json())
  * @returns HTTP status 204 indicates successful deletion.
  */
  app.delete("/api/students/:id", function (req, res) {
-  knex("students").where("id", req.params.id).del();
-  res.status(204);
+  knex("students")
+    .where("id", req.params.id)
+    .del()
+    .then(() => res.sendStatus(204));
 });
 
 module.exports = app;
