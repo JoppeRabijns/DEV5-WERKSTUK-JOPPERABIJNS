@@ -17,7 +17,7 @@ describe("test endpoints of api", () => {
     .end(() => done());
   });
 
-  it('Create a student', (done) => {
+  it('Create a student with POST', (done) => {
     request
     .post('/api/students')
     .send(student)
@@ -30,7 +30,7 @@ describe("test endpoints of api", () => {
    });
   })
   
-  it('Update a student', (done) => {
+  it('Update a student with PUT', (done) => {
     request
     .put('/api/students/1')
     .send(studentUpdate)
@@ -43,7 +43,7 @@ describe("test endpoints of api", () => {
    });
   })
 
-  it('Delete a student', (done) => {
+  it('Delete a student with DELETE', (done) => {
     request
     .delete('/api/students/1')
     .expect(204)
