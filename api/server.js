@@ -1,17 +1,16 @@
 const express = require("express");
 const app = express();
 require('dotenv').config();
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 const knex = require("../config/postegresql");
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 /**
  * [GET] /api/students
- * returns all students in database upon get request
+ * Returns all students in database upon get request
  * @returns {Object} all students in database
  */
  app.get("/api/students", async (req, res) => {
@@ -19,11 +18,13 @@ app.use(bodyParser.json())
     .then((allStudents) => res.json(allStudents));
 });
 
-
 /**
  * [POST] /api/students
- * returns all students in database upon get request
- * @returns {Object} all students in database
+ * Add student to database
+ * @param name - String - name of student
+ * @param email - String - email of student
+ * @param password - String - password of student
+ * @returns {Object} add student object
  */
  app.post("/api/students", async (req, res) => {
   knex("students")
@@ -36,12 +37,13 @@ app.use(bodyParser.json())
     .then((student) => res.json(student));
 });
 
-
 /**
  * [PUT] /api/students/:id
- * 
- * 
- * @returns {Object} updated student object
+ * Update student by id
+ * @param name - String - name of student
+ * @param email - String - email of student
+ * @param password - String - password of student
+ * @returns {Object} update student object
  */
  app.put("/api/students/:id",  async (req, res) => {
   knex("students")
