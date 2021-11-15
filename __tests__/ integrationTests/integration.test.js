@@ -9,6 +9,9 @@ const student =  {name: "Student1", email: "email@email.be", password:"password1
 const studentUpdate =  {name: "Update1", email: "email@email.be", password:"password123"};
 
 
+/**
+ * Seed database before starting tests
+ */
 beforeAll(async() => {
   try {
     await knex("students").insert({
@@ -65,6 +68,9 @@ describe("test CRUD of student api", () => {
   });
 });
 
+/**
+ * Clear database after finishing tests
+ */
 afterAll(() => {
   try {
       knex('students').del();     

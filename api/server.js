@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 require('dotenv').config();
 const bodyParser = require('body-parser');
+const checkemail = require('./helpers/checkemail')
 
 const knex = require("../config/postegresql");
 
@@ -27,7 +28,8 @@ app.use(bodyParser.json());
  * @returns {Object} add student object
  */
  app.post("/api/students", async (req, res) => {
-  knex("students")
+   if(checkemail(req.body.email)){
+    knex("students")
     .insert({
       name: req.body.name,
       email: req.body.email,
@@ -35,6 +37,7 @@ app.use(bodyParser.json());
     })
     .returning('*')
     .then((student) => res.json(student));
+   }
 });
 
 /**
