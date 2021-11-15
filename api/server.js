@@ -22,9 +22,9 @@ app.use(bodyParser.json());
 /**
  * [POST] /api/students
  * Add student to database
- * @param name - String - name of student
- * @param email - String - email of student
- * @param password - String - password of student
+ * @param {String} name of student
+ * @param {String} email of student
+ * @param {String} password of student
  * @returns {Object} add student object
  */
  app.post("/api/students", async (req, res) => {
@@ -43,9 +43,9 @@ app.use(bodyParser.json());
 /**
  * [PUT] /api/students/:id
  * Update student by id
- * @param name - String - name of student
- * @param email - String - email of student
- * @param password - String - password of student
+ * @param {String} name of student
+ * @param {String} email of student
+ * @param {String} password of student
  * @returns {Object} update student object
  */
  app.put("/api/students/:id",  async (req, res) => {
