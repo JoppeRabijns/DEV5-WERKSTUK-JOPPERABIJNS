@@ -30,6 +30,12 @@ const knex = require("knex")({
             table.string("name", 100).notNullable();
             table.string("email", 100).notNullable();
             table.string("password", 100).notNullable();
+            table.integer("city_id").unsigned();
+            table
+              .foreign("city_id")
+              .references("id")
+              .inTable("city")
+              .onDelete("RESTRICT");
             table.timestamps();
           });
       }
