@@ -4,7 +4,7 @@ const knex = require("knex")({
   client: "pg",
   connection: process.env.PG_CONNECTION_STRING
     ? process.env.PG_CONNECTION_STRING
-    : "postgres://postgres:test@localhost:5432/postgres",
+    : "postgres://postgres:J0PP3@localhost:5432/postgres",
   searchPath: ["knex", "public"],
 });
 
