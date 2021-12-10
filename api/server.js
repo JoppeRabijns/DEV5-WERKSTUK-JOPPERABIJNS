@@ -1,9 +1,8 @@
 const express = require("express");
 const app = express();
-require('dotenv').config();
-const bodyParser = require('body-parser');
-const checkemail = require('./helpers/checkemail')
-
+require("dotenv").config();
+const bodyParser = require("body-parser");
+const checkemail = require("./helpers/checkemail");
 const knex = require("../config/postegresql");
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -14,8 +13,9 @@ app.use(bodyParser.json());
  * Returns all students in database upon get request
  * @returns {Object} all students in database
  */
- app.get("/api/students", async (req, res) => {
-  knex('students')
+app.get("/api/students", async (req, res) => {
+  knex("students")
+    .join("city", "students.city_id", "city.city_id")
     .then((allStudents) => res.json(allStudents));
 });
 
@@ -27,17 +27,18 @@ app.use(bodyParser.json());
  * @param {String} password of student
  * @returns {Object} add student object
  */
- app.post("/api/students", async (req, res) => {
-   if(checkemail(req.body.email)){
+app.post("/api/students", async (req, res) => {
+  if (checkemail(req.body.email)) {
     knex("students")
-    .insert({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-    })
-    .returning('*')
-    .then((student) => res.json(student));
-   }
+      .insert({
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        city_id: req.body.city_id,
+      })
+      .returning("*")
+      .then((student) => res.json(student));
+  }
 });
 
 /**
@@ -48,7 +49,7 @@ app.use(bodyParser.json());
  * @param {String} password of student
  * @returns {Object} update student object
  */
- app.put("/api/students/:id",  async (req, res) => {
+app.put("/api/students/:id", async (req, res) => {
   knex("students")
     .where("id", req.params.id)
     .update({
@@ -56,16 +57,16 @@ app.use(bodyParser.json());
       email: req.body.email,
       password: req.body.password,
     })
-    .returning('*')
+    .returning("*")
     .then((student) => res.json(student));
-  });
+});
 
 /**
  * [DELETE] /api/students/:id
- * Delete student by id 
+ * Delete student by id
  * @returns HTTP status 204 indicates successful deletion.
  */
- app.delete("/api/students/:id", function (req, res) {
+app.delete("/api/students/:id", function (req, res) {
   knex("students")
     .where("id", req.params.id)
     .del()
@@ -73,4 +74,3 @@ app.use(bodyParser.json());
 });
 
 module.exports = app;
-
