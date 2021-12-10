@@ -9,12 +9,42 @@
 
 ## Endpoint
 
-### /api/students
+### /api/student
 
-[GET] /api/students - Get list of all students
+```javascript
+[GET] /api/students 
+  - Get list of all students
+```
 
-[POST] /api/students - Add student to database
+```javascript
+[POST] /api/students 
+  - Add student to database
+  * @param {String} name of student
+  * @param {String} email of student
+  * @param {String} password of student
+  * @returns {Object} add student object
+```
 
-[PUT] /api/students/?id - Update student by ID
+```javascript
+[PUT] /api/students/:id 
+  - Update student by ID
+  * @param {String} name of student
+  * @param {String} email of student
+  * @param {String} password of student
+  * @returns {Object} update student object
+```
 
-[DELETE] /api/students/?id - Delete student by ID
+```javascript
+[DELETE] /api/students/:id 
+  - Delete student by ID
+  * @returns HTTP status 204 indicates successful deletion.
+```
+
+
+
+
+[e
+
+
+
+
