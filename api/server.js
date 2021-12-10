@@ -71,10 +71,21 @@ app.delete("/api/students/:id", function (req, res) {
     .then(() => res.sendStatus(204));
 });
 
+/**
+ * [GET] /api/cities
+ * Returns all cities in database upon get request
+ * @returns {Object} all cities in database
+ */
 app.get("/api/cities", async (req, res) => {
   knex("city").then((allCities) => res.json(allCities));
 });
 
+/**
+ * [POST] /api/cities
+ * Add city to database
+ * @param {String} city_name name of the city
+ * @returns {Object} add city object
+ */
 app.post("/api/cities", async (req, res) => {
   if (req.body.city_name !== "") {
     knex("city")
@@ -88,6 +99,12 @@ app.post("/api/cities", async (req, res) => {
   }
 });
 
+/**
+ * [PUT] /api/cities/:city_id
+ * Update city by id
+ * @param {String} city_name name of the city
+ * @returns {Object} update city object
+ */
 app.put("/api/cities/:city_id", async (req, res) => {
   if (req.body.city_name !== "") {
     knex("city")
@@ -102,6 +119,11 @@ app.put("/api/cities/:city_id", async (req, res) => {
   }
 });
 
+/**
+ * [DELETE] /api/cities/:city_id
+ * Delete city by id
+ * @returns HTTP status 204 indicates successful deletion.
+ */
 app.delete("/api/cities/:city_id", function (req, res) {
   knex("city")
     .where("city_id", req.params.city_id)
