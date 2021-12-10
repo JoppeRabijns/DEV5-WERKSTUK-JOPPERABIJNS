@@ -15,8 +15,8 @@ const knex = require("knex")({
         return knex.schema
           .withSchema("public")
           .createTable("city", function (table) {
-            table.increments("id").primary();
-            table.string("name", 100).notNullable();
+            table.increments("city_id").primary();
+            table.string("city_name", 100).notNullable();
             table.timestamps();
           });
       }
@@ -33,7 +33,7 @@ const knex = require("knex")({
             table.integer("city_id").unsigned();
             table
               .foreign("city_id")
-              .references("id")
+              .references("city_id")
               .inTable("city")
               .onDelete("RESTRICT");
             table.timestamps();
