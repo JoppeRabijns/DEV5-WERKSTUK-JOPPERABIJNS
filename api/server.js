@@ -56,6 +56,7 @@ app.put("/api/students/:id", async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
+      city_id: req.body.city_id,
     })
     .returning("*")
     .then((student) => res.json(student));
