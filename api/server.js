@@ -3,6 +3,7 @@ const app = express();
 require("dotenv").config();
 const bodyParser = require("body-parser");
 const checkemail = require("./helpers/checkemail");
+const capitalizeFirstLetter = require("./helpers/capitalizeFirstLetter");
 
 const knex = require("../config/postegresql");
 
@@ -88,9 +89,10 @@ app.get("/api/cities", async (req, res) => {
  */
 app.post("/api/cities", async (req, res) => {
   if (req.body.city_name !== "") {
+    let city_name = capitalizeFirstLetter(req.body.city_name);
     knex("city")
       .insert({
-        city_name: req.body.city_name,
+        city_name: city_name,
       })
       .returning("*")
       .then((city) => res.json(city));
@@ -107,10 +109,11 @@ app.post("/api/cities", async (req, res) => {
  */
 app.put("/api/cities/:city_id", async (req, res) => {
   if (req.body.city_name !== "") {
+    let city_name = capitalizeFirstLetter(req.body.city_name);
     knex("city")
       .where("city_id", req.params.city_id)
       .update({
-        city_name: req.body.city_name,
+        city_name: city_name,
       })
       .returning("*")
       .then((city) => res.json(city));
