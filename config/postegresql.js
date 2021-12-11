@@ -4,7 +4,7 @@ const knex = require("knex")({
   client: "pg",
   connection: process.env.PG_CONNECTION_STRING
     ? process.env.PG_CONNECTION_STRING
-    : "postgres://postgres:test@localhost:5432/postgres",
+    : "postgres://postgres:J0PP3@localhost:5432/postgres",
   searchPath: ["knex", "public"],
 });
 
@@ -15,8 +15,8 @@ const knex = require("knex")({
         return knex.schema
           .withSchema("public")
           .createTable("city", function (table) {
-            table.increments("id").primary();
-            table.string("name", 100).notNullable();
+            table.increments("city_id").primary();
+            table.string("city_name", 100).notNullable();
             table.timestamps();
           });
       }
@@ -31,11 +31,8 @@ const knex = require("knex")({
             table.string("email", 100).notNullable();
             table.string("password", 100).notNullable();
             table.integer("city_id").unsigned();
-            table
-              .foreign("city_id")
-              .references("id")
-              .inTable("city")
-              .onDelete("RESTRICT");
+            table.foreign("city_id").references("city_id").inTable("city");
+            /*.onDelete("RESTRICT");*/
             table.timestamps();
           });
       }
