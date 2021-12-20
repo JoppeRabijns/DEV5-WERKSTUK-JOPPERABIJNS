@@ -10,15 +10,16 @@ const knex = require("../../config/postegresql");
  */
 beforeAll(async () => {
   try {
+    await knex("city").insert({
+      city_id: 201,
+      city_name: "Neerpelt",
+    });
     await knex("students").insert({
-      id: 200,
+      id: 201,
       name: "joppe",
       email: "joppe@rabijns.be",
       password: "password",
-    });
-    await knex("city").insert({
-      city_id: 200,
-      city_name: "Neerpelt",
+      city_id: 201,
     });
   } catch (e) {
     console.log(e);
@@ -26,18 +27,17 @@ beforeAll(async () => {
 });
 
 describe("test CRUD of student api", () => {
-  it("GET all student", (done) => {
+  it("Create a city with POST", (done) => {
     request
-      .get("/api/students")
+      .post("/api/cities")
+      .send({
+        city_id: 201,
+        city_name: "brussel",
+      })
       .expect(200)
-      .end(() => done());
-  });
-
-  it("GET all cities", (done) => {
-    request
-      .get("/api/cities")
-      .expect(200)
-      .end(() => {
+      .end((err, res) => {
+        expect(res.body[0].city_name).not.toEqual("brussel");
+        expect(res.body[0].city_name).toEqual("Brussel");
         done();
       });
   });
@@ -59,23 +59,9 @@ describe("test CRUD of student api", () => {
       });
   });
 
-  it("Create a city with POST", (done) => {
-    request
-      .post("/api/cities")
-      .send({
-        city_name: "lommel",
-      })
-      .expect(200)
-      .end((err, res) => {
-        expect(res.body[0].city_name).not.toEqual("lommel");
-        expect(res.body[0].city_name).toEqual("Lommel");
-        done();
-      });
-  });
-
   it("Update a student with PUT", (done) => {
     request
-      .put("/api/students/200")
+      .put("/api/students/201")
       .send({
         name: "Update1",
         email: "email@email.be",
@@ -92,7 +78,7 @@ describe("test CRUD of student api", () => {
 
   it("Update a city with PUT", (done) => {
     request
-      .put("/api/cities/200")
+      .put("/api/cities/201")
       .send({
         city_name: "Overpelt",
       })
@@ -103,15 +89,31 @@ describe("test CRUD of student api", () => {
       });
   });
 
+  it("GET all student", (done) => {
+    request
+      .get("/api/students")
+      .expect(200)
+      .end(() => done());
+  });
+
+  it("GET all cities", (done) => {
+    request
+      .get("/api/cities")
+      .expect(200)
+      .end(() => {
+        done();
+      });
+  });
+
   it("Delete a student with DELETE", (done) => {
     request
-      .delete("/api/students/200")
+      .delete("/api/students/201")
       .expect(204)
       .end(() => done());
   });
   it("Delete a city with DELETE", (done) => {
     request
-      .delete("/api/cities/200")
+      .delete("/api/cities/201")
       .expect(204)
       .end(() => done());
   });
