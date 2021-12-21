@@ -5,27 +5,21 @@ const request = supertest(app);
 
 const knex = require("../../config/postegresql");
 
-const student = {
-  name: "Student1",
-  email: "email@email.be",
-  password: "password123",
-};
-const studentUpdate = {
-  name: "Update1",
-  email: "email@email.be",
-  password: "password123",
-};
-
 /**
  * Seed database before starting tests
  */
 beforeAll(async () => {
   try {
+    await knex("city").insert({
+      city_id: 201,
+      city_name: "Neerpelt",
+    });
     await knex("students").insert({
-      id: 200,
+      id: 201,
       name: "joppe",
       email: "joppe@rabijns.be",
       password: "password",
+      city_id: 201,
     });
   } catch (e) {
     console.log(e);
@@ -33,17 +27,29 @@ beforeAll(async () => {
 });
 
 describe("test CRUD of student api", () => {
-  it("GET all student", (done) => {
+  it("Create a city with POST", (done) => {
     request
-      .get("/api/students")
+      .post("/api/cities")
+      .send({
+        city_id: 201,
+        city_name: "brussel",
+      })
       .expect(200)
-      .end(() => done());
+      .end((err, res) => {
+        expect(res.body[0].city_name).not.toEqual("brussel");
+        expect(res.body[0].city_name).toEqual("Brussel");
+        done();
+      });
   });
 
   it("Create a student with POST", (done) => {
     request
       .post("/api/students")
-      .send(student)
+      .send({
+        name: "Student1",
+        email: "email@email.be",
+        password: "password123",
+      })
       .expect(200)
       .end((err, res) => {
         expect(res.body[0].name).toEqual("Student1");
@@ -55,8 +61,12 @@ describe("test CRUD of student api", () => {
 
   it("Update a student with PUT", (done) => {
     request
-      .put("/api/students/200")
-      .send(studentUpdate)
+      .put("/api/students/201")
+      .send({
+        name: "Update1",
+        email: "email@email.be",
+        password: "password123",
+      })
       .expect(200)
       .end((err, res) => {
         expect(res.body[0].name).toEqual("Update1");
@@ -66,9 +76,44 @@ describe("test CRUD of student api", () => {
       });
   });
 
+  it("Update a city with PUT", (done) => {
+    request
+      .put("/api/cities/201")
+      .send({
+        city_name: "Overpelt",
+      })
+      .expect(200)
+      .end((err, res) => {
+        expect(res.body[0].city_name).toEqual("Overpelt");
+        done();
+      });
+  });
+
+  it("GET all student", (done) => {
+    request
+      .get("/api/students")
+      .expect(200)
+      .end(() => done());
+  });
+
+  it("GET all cities", (done) => {
+    request
+      .get("/api/cities")
+      .expect(200)
+      .end(() => {
+        done();
+      });
+  });
+
   it("Delete a student with DELETE", (done) => {
     request
-      .delete("/api/students/200")
+      .delete("/api/students/201")
+      .expect(204)
+      .end(() => done());
+  });
+  it("Delete a city with DELETE", (done) => {
+    request
+      .delete("/api/cities/201")
       .expect(204)
       .end(() => done());
   });
@@ -79,7 +124,8 @@ describe("test CRUD of student api", () => {
  */
 afterAll(() => {
   try {
-    knex("students").del();
+    knex("students").select("*").del();
+    knex("city").select("*").del();
     knex.destroy();
   } catch (e) {
     console.log(e);
