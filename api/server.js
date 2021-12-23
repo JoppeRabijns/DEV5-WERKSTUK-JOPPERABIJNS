@@ -27,6 +27,7 @@ app.get("/api/students", async (req, res) => {
  * @param {String} name of student
  * @param {String} email of student
  * @param {String} password of student
+ * @param {String} city_id of id of city
  * @returns {Object} add student object
  */
 app.post("/api/students", async (req, res) => {
@@ -49,6 +50,7 @@ app.post("/api/students", async (req, res) => {
  * @param {String} name of student
  * @param {String} email of student
  * @param {String} password of student
+ * @param {String} city_id of id of city
  * @returns {Object} update student object
  */
 app.put("/api/students/:id", async (req, res) => {
